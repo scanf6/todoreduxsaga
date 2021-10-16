@@ -1,9 +1,10 @@
 import { all } from '@redux-saga/core/effects';
-import {watchFetchTodos} from './todos.saga';
+import {watchFetchTodos, watchFetchTodo} from './todos.saga';
 
 function* rootSaga() {
     yield all([
-        watchFetchTodos() // Dont forget to execute the saga
+        watchFetchTodos(), // Dont forget to execute the saga
+        watchFetchTodo()
     ]);
 }
 

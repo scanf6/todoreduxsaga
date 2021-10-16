@@ -3,6 +3,9 @@ import store from "./Redux/store";
 import React, {useEffect} from 'react';
 import {todosActions} from './Redux/actions';
 
+//Componens
+import Todo from './Components/Todo';
+
 function TodoApp() {
   const dispatch = useDispatch();
   const {loading, error, items} = useSelector(state => state.todos);
@@ -15,7 +18,7 @@ function TodoApp() {
     <div className="App">
       {loading && 'Fetching todos...'}
       {error && 'Error while fetching todos...'}
-      {items && items.map((item, index) => (<div key={index}>{item.title}</div>))}
+      {items && items.map((item, index) => (<Todo key={index} todo={item} />))}
     </div>
   );
 }
