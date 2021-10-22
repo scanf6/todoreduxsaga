@@ -1,7 +1,14 @@
-import {takeEvery, call, put} from 'redux-saga/effects';
+import {takeEvery, call, put, select} from 'redux-saga/effects';
 import {todos} from '../types';
 import api from '../../services/todos.service';
-import { fetchTodoFailure, fetchTodosFailure, fetchTodosSuccess, fetchTodoSuccess } from '../actions/todos.actions';
+import {
+    deleteTodoFailure,
+    deleteTodoSuccess,
+    fetchTodoFailure,
+    fetchTodosFailure,
+    fetchTodosSuccess,
+    fetchTodoSuccess
+} from '../actions/todos.actions';
 
 // WORKERS
 function* fetchTodos() {
@@ -22,6 +29,21 @@ function* fetchTodo(action) { // The saga actually take the dispatched action as
     }
 }
 
+function* deleteTodo(action) {
+    try {
+        yield call(api.delete, action.payload);
+
+        // Select the todos actually in the state right now
+        const todos = yield select(state => state.todos); // The select effect allow to select a piece of state in a saga
+
+        const newTodos = todos.items.filter(todo => todo.id !== action.payload);
+        yield put(fetchTodosSuccess(newTodos));
+        yield put(deleteTodoSuccess());
+    } catch(error) {
+        yield put(deleteTodoFailure());
+    }
+}
+
 // WATCHERS
 export function* watchFetchTodos() {
     yield takeEvery(todos.FETCH_TODOS, fetchTodos);
@@ -29,4 +51,8 @@ export function* watchFetchTodos() {
 
 export function* watchFetchTodo() {
     yield takeEvery(todos.FETCH_TODO, fetchTodo);
+}
+
+export function* watchDeleteTodo() {
+    yield takeEvery(todos.DELETE_TODO, deleteTodo);
 }

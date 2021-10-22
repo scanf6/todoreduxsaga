@@ -20,6 +20,12 @@ const todoReducer =  (state = initialState, action) => {
             return {...state, loading: false, item: action.payload};
         case todos.FETCH_TODO_FAILURE:
             return {...state, loading: false, error: true}
+        case todos.DELETE_TODO:
+            return {...state, loading: true}
+        case todos.DELETE_TODO_SUCCESS:
+            return {...state, loading: false};
+        case todos.DELETE_TODO_FAILURE:
+            return {...state, loading: false, error: true}
         default:
             return state;
     }

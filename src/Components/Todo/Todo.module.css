@@ -1,4 +1,6 @@
 .container {
+    position: relative;
+    z-index: 1;
     cursor: pointer;
     padding: 1rem;
     margin: 1rem;
@@ -7,4 +9,9 @@
 
 .container:hover {
     color: white; background-color: blue;
+}
+
+.actionButtons {
+    position: relative;
+    z-index: 2;
 }
